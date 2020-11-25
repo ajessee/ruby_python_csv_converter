@@ -1,2 +1,5 @@
 # ignore pycache directory
 __pycache__/
+
+# ignore output file directory
+output_csv_files/
