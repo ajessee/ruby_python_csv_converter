@@ -9,15 +9,15 @@
 ### To run Python script
 In the command line, change directory to `python/` and enter:
 * `python convert.py input_csv_file_name.csv your_command`
-  - **replace `input_csv_file_name.csv` with your CSV file name**
-  - **make sure your CSV file is in the `input_csv_files/` directory**
-  - **replace `your_command` with the command you want to run**
+  - replace `input_csv_file_name.csv` with your CSV file name
+  - make sure your CSV file is in the `input_csv_files/` directory
+  - replace `your_command` with the command you want to run
 
 ### To run Ruby script
 In the command line, change directory to `ruby/` and enter: 
 * `ruby convert.rb input_csv_file_name.csv`
-  - **replace `input_csv_file_name.csv` with your CSV file name**
-  - **make sure your CSV file is in the `input_csv_files/` directory**
+  - replace `input_csv_file_name.csv` with your CSV file name
+  - make sure your CSV file is in the `input_csv_files/` directory
 
 ### Currently supported commands:
 * `add_dates`
