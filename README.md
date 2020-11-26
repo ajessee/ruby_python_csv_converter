@@ -4,10 +4,10 @@
 
 ### Input/Output Directories
 1. Copy your input CSV file into the 'input_csv_files' directory, make sure it has a '.csv' file name extension
-2. Output CSV file will saved in 'output_csv_files' directory with the following file name format: `new_input_csv_file_name.csv`
+2. Output CSV file will saved in 'output_csv_files' directory with the same name as the input file.
 
 ### To run in Python:
-From inside the 'python' directory, run the follow command (replace input_csv_file_name.csv with your file's name): 
+From inside the 'python' directory, run the follow command (**replace input_csv_file_name.csv with your file's name**): 
 `python convert.py input_csv_file_name.csv add_dates`
 
 ### To run in Ruby:
