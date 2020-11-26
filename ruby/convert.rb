@@ -11,6 +11,7 @@ def no_file_name
   puts 'Use the following format to run this script:'
   puts 'ruby convert.rb input_csv_file_name.csv your_command'
 end
+
 # error message for missing command
 def no_command
   puts 'Error: Missing command.'
@@ -81,7 +82,7 @@ if ARGV.any?
 
   # write out new CSV file
   CSV.open(output_csv_path, 'wb') do |csv|
-    # write row headers from input CSV file plus the start date, end date, date ranges headers we added using the add_column_headers() function
+    # write row headers from input CSV file plus the "Start Date", "End Date", "Date Ranges" headers we added using the add_column_headers() function
     csv << headers
     csv_objects_array.each do |csv_object|
       ## 'add_dates' command-specific logic. Remove or replace if needed.
