@@ -8,7 +8,8 @@
 
 ### To run in Python:
 From inside the 'python' directory, run the follow command (**replace input_csv_file_name.csv with your file's name**): 
-`python convert.py input_csv_file_name.csv add_dates`
+* `python convert.py input_csv_file_name.csv add_dates`
 
 ### To run in Ruby:
-From inside the 'ruby' directory, run the follow command: `ruby convert.rb input_csv_file_name.csv`
+From inside the 'ruby' directory, run the follow command: 
+* `ruby convert.rb input_csv_file_name.csv`
