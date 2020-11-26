@@ -28,12 +28,13 @@ def add_column_headers(headers, new_column_headers_array):
 # set new attributes for "Start Date", "End Date", "Date Ranges" in csv_object
 def set_date_attributes_in_csv_obj(csv_object, date_object, headers):
   if 'Date' in headers and hasattr(csv_object, 'name'):
-    # get array of dates with only unique values
+    # converting list to set will return only unique values
     unique_dates_set = set(date_object[csv_object.name])
-    unique_dates_list = list(unique_dates_set)
+    # sorting a set will return a list
+    unique_dates_list = sorted(unique_dates_set)
     
     # assign start date, end date, date ranges values to csv object
-    csv_object.start_date, csv_object.end_date, csv_object.date_ranges = create_date_strings(unique_dates_list)
+    csv_object.start_date, csv_object.end_date, csv_object.date_ranges = create_date_strings(unique_dates_list, csv_object.name)
 
 # test if row data for column is blank
 def test_for_blank_row_data(headers, row, header_name, index):
@@ -43,7 +44,7 @@ def test_for_blank_row_data(headers, row, header_name, index):
     return False
 
 # create string of date ranges
-def create_date_strings(array_of_dates):
+def create_date_strings(array_of_dates, name):
   start_date = ""
   end_date = ""
   range_string = ""
