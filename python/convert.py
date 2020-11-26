@@ -1,119 +1,73 @@
-# To run this file, enter the following command in the command line:
-# python convert.py input_csv_file_name.csv
+# To run this script, enter the following command in the command line (replace input_csv_file_name with your file's name):
+# python convert.py input_csv_file_name.csv add_dates
 # Make sure your input CSV file is in the 'input_csv_files/' directory
 import csv
 import sys
 import pdb
-import shutil
 import os
-from geo_obj import GeoObject
+# import functions from add_dates.py
+from add_dates import create_date_object, add_column_headers, set_date_attributes_in_csv_obj, test_for_blank_row_data, create_date_strings
+from csv_obj import CsvObject
 
 # will only run if you provide file name in command line
 if (len(sys.argv) > 1):
 
   file_name = sys.argv[1]
-  # options aren't being used now, but you can extend this in the future if you want
-  options = sys.argv[1:]
-  # array of geo objects, which represent a row in the CSV file
-  geo_objects_array = []
+  # additional_args can be used to pass as many additional arguments as you want
+  additional_args = sys.argv[2:]
+  # command option will always be the first additional argument
+  command_option = additional_args[0]
+  # array of csv objects, which represent a row in the CSV file
+  csv_objects_array = []
   # get current directory
   current_dir_path = os.path.dirname(os.path.realpath(__file__))
   # relative paths to the input/output CSV file directories
   input_csv_dir = '../input_csv_files'
   output_csv_dir = '../output_csv_files'
-  # create output file name
-  output_file_name = 'new_' + file_name
   # get path to input csv file
   input_csv_path = os.path.join(current_dir_path, input_csv_dir, file_name)
   # get path to output csv file
-  output_csv_path = os.path.join(current_dir_path, output_csv_dir, output_file_name)
+  output_csv_path = os.path.join(current_dir_path, output_csv_dir, file_name)
+  # to extend this script, add other functions into another python file in this directory, and then import at the top of this file.
+  # then, nest any logic in an 'if' condition block. Example:
+  # if command_option == "your_command":
+  #   your_logic_here
 
-  with open(input_csv_path, 'r') as f:
+  # utf-8-sig encoding will remove all BOMs (Byte Order Marks)
+  with open(input_csv_path, 'r', encoding='utf-8-sig') as f:
     reader = csv.reader(f)
     # Get CSV file header row
     headers = next(reader, None)
-    # there is a \ufeff character in the fid column name ('\ufefffid'), so we replace it with just 'fid'. You should probably reformat your spreadsheet column names
-    headers[0] = 'fid'
-    # Append the new column names to the end of existing header array
-    headers.append("Start Date")
-    headers.append("End Date")
-    headers.append("Date Ranges")
 
     for row in reader:
-      # if name column is blank (row[5]), skip creating a geo object (will delete this row from new CSV file)
-      if row[5] == '':
-        continue
-      # create geo object and append to array
-      geo_objects_array.append(GeoObject(*row))
-  
-  # blank object store key/value pair of geo region name and dates array. Example:
-  # {
-  #   AACHEN: [1820, 1836, 1837, 1838....]
-  # }
-  date_object = {}
+      if command_option == "add_dates":
+        # don't create csv_object if row data for 'Name' column is blank
+        if test_for_blank_row_data(headers, row, 'Name', 5):
+          continue
+      # create csv object and append to array
+      csv_object = CsvObject()
+      for idx, header in enumerate(headers):
+        setattr(csv_object, header.replace(" ", "_").lower(), row[idx])
+      csv_objects_array.append(csv_object)
 
-  for geo_obj in geo_objects_array:
-    # if geo region name is already key in array, append date into value array
-    if geo_obj.name in date_object:
-      date_object[geo_obj.name].append(int(geo_obj.date))
-    # else, create key and array with first date value
-    else:
-      date_object[geo_obj.name] = [int(geo_obj.date)]
-
-  # helper function to create string of date ranges
-  def create_date_strings(array_of_dates):
-    start_date = ""
-    end_date = ""
-    range_string = ""
-    for idx, date in enumerate(array_of_dates):
-      # first date in array
-      if idx == 0:
-        range_string += str(date)
-        start_date = str(date)
-        if len(array_of_dates) == idx + 1:
-          end_date = str(date)
-        continue
-      # last date in array
-      elif idx + 1 == len(array_of_dates):
-        delimiter = ""
-        if date - 1 == array_of_dates[idx - 1]:
-          delimiter += "-"
-        else:
-          delimiter += ", "
-        range_string += f'{delimiter}{date}'
-        end_date = str(date)
-        continue
-      # all dates in between
-      else:
-        # date +1 equals next date in array and date -1 equals last date in array. ([1910,1911,1912] we are looking at 1912).
-        if date + 1 == array_of_dates[idx + 1] and date - 1 == array_of_dates[idx - 1]:
-          continue
-        # date +1 equals next date in array and date -1 does not equal last date in array. ([1905,1911,1912] we are looking at 1911)
-        elif date + 1 == array_of_dates[idx + 1] and date - 1 != array_of_dates[idx - 1]:
-          range_string += f', {date}'
-          continue
-        # date +1 does not equal next date in array and date -1 does equal last date in array. ([1910,1911,1920] we are looking at 1911)
-        elif date + 1 != array_of_dates[idx + 1] and date - 1 == array_of_dates[idx - 1]:
-          range_string += f'-{date}'
-          continue
-        # date +1 does not equal next date in array and date -1 does not equal last date in array. ([1910,1915,1920] we are looking at 1915)
-        elif date + 1 != array_of_dates[idx + 1] and date - 1 != array_of_dates[idx - 1]:
-          range_string += f', {date}'
-          continue
-    # return array with start date, end date, range string
-    return [start_date, end_date, range_string]
+  # logic specific to 'add_dates' command
+  if command_option == "add_dates":
+    # column headers to add to CSV file
+    new_column_headers_array = ["Start Date", "End Date", "Date Ranges"]
+    # add new headers to existing headers
+    add_column_headers(headers, new_column_headers_array)
+    # create date object
+    date_object = create_date_object(headers, new_column_headers_array, csv_objects_array)
 
   with open(output_csv_path, 'w') as new_file:
     file_writer = csv.writer(new_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     # write original row headers plus the start date, end date, date ranges headers we added
     file_writer.writerow(headers)
 
-    for geo_obj in geo_objects_array:
-      # get array of dates with only unique values
-      unique_dates_set = set(date_object[geo_obj.name])
-      unique_dates_list = list(unique_dates_set)
-      
-      # assign start date, end date, date ranges values to geo object
-      geo_obj.start_date, geo_obj.end_date, geo_obj.date_ranges = create_date_strings(unique_dates_list)
-      # write CSV row using GeoObject instance method that returns array of object properties
-      file_writer.writerow(geo_obj.to_csv())
+    for csv_object in csv_objects_array:
+      # only add new column data command is add_dates
+      if command_option == "add_dates":
+        set_date_attributes_in_csv_obj(csv_object, date_object, headers)
+
+      # write CSV row using csvObject instance method that returns array of object properties
+      file_writer.writerow(csv_object.to_csv())
