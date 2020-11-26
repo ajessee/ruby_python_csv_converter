@@ -8,13 +8,13 @@
 
 ### To run Python script
 In the command line, change directory to `python/` and enter:
-```Bash
+```shellscript
 python convert.py input_csv_file_name.csv your_command
 ```
 
 ### To run Ruby script
 In the command line, change directory to `ruby/` and enter: 
-```Bash
+```shellscript
 ruby convert.rb input_csv_file_name.csv your_command
 ```
 
@@ -67,11 +67,11 @@ To extend either script, use the following steps:
 ### Benchmarking
 Using sample CSV file `time.csv` on MacBook Pro Mid 2015, 2.2 GHz Quad-Core Intel Core i7, 16 GB memory: 
   * Ruby
-    ```Bash 
+    ```shellscript 
     Script took 17.39 seconds to run
     ```
   * Python
-    ```Bash 
+    ```shellscript 
     Script took 5.38 seconds to run
     ```
 
