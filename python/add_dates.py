@@ -83,3 +83,5 @@ def create_date_strings(array_of_dates):
         continue
   # return array with start date, end date, range string
   return [start_date, end_date, range_string]
+
+  # Made with love by Andre for Hayley
