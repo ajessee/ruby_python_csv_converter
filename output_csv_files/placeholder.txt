@@ -1,2 +1,0 @@
-need a file in this directory to get git to add output directory
-or maybe i just don't know what i'm doing
