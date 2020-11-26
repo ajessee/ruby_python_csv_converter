@@ -1,5 +1,7 @@
 # ignore pycache directory
 __pycache__/
 
+.DS_Store
+
 # ignore output file directory
-!/output_csv_files/**
+output_csv_files/**
