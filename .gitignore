@@ -2,4 +2,4 @@
 python/__pycache__/
 
 # ignore output file directory
-output_csv_files/**
+output_csv_files/*.csv
