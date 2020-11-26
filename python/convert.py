@@ -1,11 +1,3 @@
-# To run this script, enter the following command in the command line:
-# python convert.py input_csv_file_name.csv your_command
-# Remember to replace 'input_csv_file_name.csv' with your file's name and 'your_command' with the command you want to run
-# Currently supported commands: 'add_dates'
-# Current example:
-# python convert.py time.csv add_dates
-# Make sure your input CSV file is in the 'input_csv_files/' directory
-
 import csv
 import sys
 import os
