@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative('csv_obj')
 require_relative('add_dates')
 require 'csv'
@@ -116,7 +118,7 @@ if ARGV.any?
     csv << headers
     csv_objects_array.each do |csv_object|
       ## Command logic, 'write' stage
-      ## For 'add_dates', will add new columns "Start Date", "End Date", "Date Ranges" row data to CSV object
+      # For 'add_dates', will add new columns "Start Date", "End Date", "Date Ranges" row data to CSV object
       command_logic(
         command_option,
         'write',

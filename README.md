@@ -69,7 +69,7 @@ To extend either script, use the following steps:
 6. In your new file (class), put your code in the `matcher()` static method. Look at the `AddDates` class for guidance.
 7. Profit. 
 
-### Benchmarking
+### Benchmarks
 Using sample CSV file `time.csv` on MacBook Pro Mid 2015, 2.2 GHz Quad-Core Intel Core i7, 16 GB memory: 
   * Ruby
     ```sh 
@@ -79,4 +79,5 @@ Using sample CSV file `time.csv` on MacBook Pro Mid 2015, 2.2 GHz Quad-Core Inte
     ```sh 
     Script took 5.38 seconds to run
     ```
+Yeah, apparently Python is ~3x faster than Ruby for this use case.
 

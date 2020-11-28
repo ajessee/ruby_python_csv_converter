@@ -1,16 +1,17 @@
-# class for add_dates command
+# frozen_string_literal: true
+
+# add_dates command class
 class AddDates
-  # attr_accessor :date_object
+  # setup instance variable and accessor for date_object
+  attr_accessor :date_object
   @date_object = nil
 
-  def self.date_object
-    @date_object
-  end
-
+  # method to compare Class to command
   def self.===(args_array)
     args_array[0] == 'add_dates'
   end
 
+  # utility static method to run different logic based on stage of operations from convert.rb script
   def self.matcher(args_array)
     return_object = nil
     match_array = args_array[0..1]

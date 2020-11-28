@@ -95,6 +95,7 @@ class AddDates:
         # return array with start date, end date, range string
         return [start_date, end_date, range_string]
 
+    # utility static method to run different logic based on stage of operations from convert.rb script
     @staticmethod
     def matcher(cls, args_array):
         return_object = None
