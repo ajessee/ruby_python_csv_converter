@@ -24,7 +24,6 @@ def no_command():
 # Command switch logic
 def command_logic(command, stage, args):
     args_array = [command, stage, args]
-    return_object = None
     if command == 'add_dates':
         return_object = AddDates.matcher(AddDates, args_array)
     # to add new commands, add below

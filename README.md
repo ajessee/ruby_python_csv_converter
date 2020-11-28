@@ -86,7 +86,6 @@ To extend either script, use the following steps:
     ```Python
     def command_logic(command, stage, args):
         args_array = [command, stage, args]
-        return_object = None
         if command == 'add_dates':
             return_object = AddDates.matcher(AddDates, args_array)
         # to add new commands, add below
