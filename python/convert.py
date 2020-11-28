@@ -28,8 +28,8 @@ def command_logic(command, stage, args):
     if command == 'add_dates':
         return_object = AddDates.matcher(AddDates, args_array)
     # to add new commands, add below
-    # elif command = 'add_new_command_here':
-    #   return_object = YourClass.matcher(YourClass, args_array)
+    # elif command == 'add_new_command_here':
+    #     return_object = YourClass.matcher(YourClass, args_array)
     return return_object
 
 

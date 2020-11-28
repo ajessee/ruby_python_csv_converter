@@ -39,6 +39,9 @@ def command_logic(command, stage, args)
   case args_array
   when AddDates
     return_object = AddDates.matcher(args_array)
+  # to add new commands, add below
+  # when YourClass
+  #   return_object = YourClass.matcher(args_array)
   end
   return_object
 end

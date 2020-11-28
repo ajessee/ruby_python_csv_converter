@@ -67,7 +67,34 @@ To extend either script, use the following steps:
     from new_file_name import YourClass
     ```
 6. In your new file (class), put your code in the `matcher()` static method. Look at the `AddDates` class for guidance.
-7. Profit. 
+7. In `convert` file, add your command to the `command_logic()` function, and follow the pattern for your respective language.
+  * Ruby:
+    ```Ruby 
+    def command_logic(command, stage, args)
+      args_array = [command, stage, args]
+      case args_array
+      when AddDates
+        return_object = AddDates.matcher(args_array)
+      # to add new commands, add below
+      # when YourClass
+      #   return_object = YourClass.matcher(args_array)
+      end
+      return_object
+    end
+    ```
+  * Python:
+    ```Python
+    def command_logic(command, stage, args):
+        args_array = [command, stage, args]
+        return_object = None
+        if command == 'add_dates':
+            return_object = AddDates.matcher(AddDates, args_array)
+        # to add new commands, add below
+        # elif command == 'add_new_command_here':
+        #     return_object = YourClass.matcher(YourClass, args_array)
+        return return_object
+    ```
+8. Profit. 
 
 ### Benchmarks
 Using sample CSV file `time.csv` on MacBook Pro Mid 2015, 2.2 GHz Quad-Core Intel Core i7, 16 GB memory: 
