@@ -19,6 +19,28 @@ def no_command
   puts 'ruby convert.rb input_csv_file_name.csv your_command'
 end
 
+# convert integers in string to humanized form.
+# Needed for converting string to symbol since in Ruby, you can't have an int at the beginning of a symbol
+def humanize_int_in_string(input_string)
+  int_index = input_string.index(/\d+/)
+  if int_index
+    int_string = input_string[int_index]
+    int_humanized = int_string.to_i.humanize
+    input_string.gsub!(int_string, int_humanized)
+  end
+  input_string
+end
+
+## Command switch logic
+def command_logic(command, stage, args)
+  args_array = [command, stage, args]
+  case args_array
+  when AddDates
+    return_object = AddDates.matcher(args_array)
+  end
+  return_object
+end
+
 ## Main logic
 # Throw error if no file name provided
 if ARGV.any?
@@ -35,7 +57,7 @@ if ARGV.any?
   end
   # command option will always be the first additional argument
   command_option = additional_args[0]
-  # array of csv objects, which represent a row in the CSV file 
+  # array of csv objects, which represent a row in the CSV file
   csv_objects_array = []
   # get current directory path
   current_dir_path = __dir__
@@ -51,11 +73,17 @@ if ARGV.any?
 
   # read in CSV file
   CSV.foreach(input_csv_path, headers: true) do |row|
-    ## 'add_dates' command-specific logic. Remove or replace if needed.
-    if command_option == 'add_dates'
-      # if name column is blank, skip creating a csv object
-      next if test_for_blank_row_data(headers, row, 'NAME', 5)
-    end
+    ## Command logic, 'read' stage.
+    # For 'add_dates', will return true if name column is blank, skipping iteration.
+    next if command_logic(
+      command_option,
+      'read',
+      {
+        headers: headers,
+        row: row
+      }
+    )
+
     # create CSV object with no attributes
     csv_object = CsvObject.new
     row.each do |key, value|
@@ -70,26 +98,33 @@ if ARGV.any?
     csv_objects_array.push(csv_object)
   end
 
-  ## 'add_dates' command-specific logic. Remove or replace if needed.
-  if command_option == 'add_dates'
-    # column headers to add to CSV file
-    new_column_headers_array = ['Start Date', 'End Date', 'Date Ranges']
-    # add new headers to existing headers
-    add_column_headers(headers, new_column_headers_array)
-    # create date object
-    date_object = create_date_object(headers, new_column_headers_array, csv_objects_array)
-  end
+  ## Command logic, 'setup' stage.
+  # For 'add_dates', will add new headers and create date object which will be used in write stage.
+  # Returns date object.
+  date_object = command_logic(
+    command_option,
+    'setup',
+    {
+      headers: headers,
+      csv_objects_array: csv_objects_array
+    }
+  )
 
   # write out new CSV file
   CSV.open(output_csv_path, 'wb') do |csv|
-    # write row headers from input CSV file plus the "Start Date", "End Date", "Date Ranges" headers we added using the add_column_headers() function
+    # write original row headers from input CSV file
     csv << headers
     csv_objects_array.each do |csv_object|
-      ## 'add_dates' command-specific logic. Remove or replace if needed.
-      # add new columns row data
-      if command_option == 'add_dates'
-        csv_object.start_date, csv_object.end_date, csv_object.date_ranges = create_date_strings(date_object[csv_object.name].uniq)
-      end
+      ## Command logic, 'write' stage
+      ## For 'add_dates', will add new columns "Start Date", "End Date", "Date Ranges" row data to CSV object
+      command_logic(
+        command_option,
+        'write',
+        {
+          csv_object: csv_object,
+          date_object: date_object
+        }
+      )
       # write CSV row using CsvObject instance method that returns array of object properties
       csv << csv_object.to_csv
     end
@@ -102,4 +137,3 @@ if ARGV.any?
 else
   no_file_name
 end
-
