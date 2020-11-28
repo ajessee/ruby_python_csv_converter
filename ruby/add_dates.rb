@@ -1,5 +1,12 @@
 # class for add_dates command
 class AddDates
+  # attr_accessor :date_object
+  @date_object = nil
+
+  def self.date_object
+    @date_object
+  end
+
   def self.===(args_array)
     args_array[0] == 'add_dates'
   end
@@ -18,13 +25,13 @@ class AddDates
       # add new headers to existing headers
       add_column_headers(args[:headers], new_column_headers_array)
       # create date object
-      return_object = create_date_object(args[:headers], new_column_headers_array, args[:csv_objects_array])
+      @date_object = create_date_object(args[:headers], new_column_headers_array, args[:csv_objects_array])
     when %w[add_dates write]
       args[:csv_object].start_date,
       args[:csv_object].end_date,
       args[:csv_object].date_ranges =
         create_date_strings(
-          args[:date_object][args[:csv_object].name].uniq
+          @date_object[args[:csv_object].name].uniq
         )
     end
     return_object
@@ -69,7 +76,10 @@ class AddDates
     return unless headers.include?('Date') && !csv_object.name.nil?
 
     # set start date, end date, date ranges attributes in CSV object from return value of create_date_strings()
-    geo_object.start_date, geo_object.end_date, geo_object.date_ranges = create_date_strings(date_object[geo_object.name].uniq.sort)
+    geo_object.start_date,
+    geo_object.end_date,
+    geo_object.date_ranges =
+      create_date_strings(date_object[geo_object.name].uniq.sort)
   end
 
   ## test if row data for column is blank

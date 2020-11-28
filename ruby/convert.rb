@@ -100,8 +100,8 @@ if ARGV.any?
 
   ## Command logic, 'setup' stage.
   # For 'add_dates', will add new headers and create date object which will be used in write stage.
-  # Returns date object.
-  date_object = command_logic(
+  # Date object will be stored in AddDates class variable.
+  command_logic(
     command_option,
     'setup',
     {
@@ -121,8 +121,7 @@ if ARGV.any?
         command_option,
         'write',
         {
-          csv_object: csv_object,
-          date_object: date_object
+          csv_object: csv_object
         }
       )
       # write CSV row using CsvObject instance method that returns array of object properties
