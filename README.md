@@ -95,8 +95,10 @@ To extend either script, use the following steps:
     ```
 8. Profit. 
 
-### Benchmarks
-Using sample CSV file `time.csv` on MacBook Pro Mid 2015, 2.2 GHz Quad-Core Intel Core i7, 16 GB memory: 
+### Benchmarking
+All benchmarks use sample CSV file `time.csv`.
+
+MacBook Pro Mid 2015, 2.2 GHz Quad-Core Intel Core i7, 16 GB memory: 
   * Ruby
     ```sh 
     Script took 17.39 seconds to run
@@ -105,5 +107,14 @@ Using sample CSV file `time.csv` on MacBook Pro Mid 2015, 2.2 GHz Quad-Core Inte
     ```sh 
     Script took 5.38 seconds to run
     ```
-Yeah, apparently Python is ~3x faster than Ruby for this use case.
+Raspberry Pi 4, 1.5 GHz Broadcom BCM2711, Quad core Cortex-A72 (ARM v8) 64-bit SoC, 8 GB memory: 
+  * Ruby
+    ```sh 
+    Script took 75.56 seconds to run
+    ```
+  * Python
+    ```sh 
+    Script took 18.64 seconds to run
+    ```
+Yeah, apparently Python is 3x-4x faster than Ruby for this use case.
 
