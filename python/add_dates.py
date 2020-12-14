@@ -104,7 +104,7 @@ class AddDates:
         if match_array == ['add_dates', 'read']:
             # if name column is blank, skip creating a csv object
             return_object = cls.test_for_blank_row_data(
-                command_args["headers"], command_args["row"], 'NAME', 5)
+                command_args["headers"], command_args["row"], command_args["grouping_column"], command_args["grouping_index"])
         elif match_array == ['add_dates', 'setup']:
             # column headers to add to CSV file
             new_column_headers_array = [

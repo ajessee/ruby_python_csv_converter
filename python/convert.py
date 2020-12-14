@@ -47,6 +47,8 @@ if (len(sys.argv) > 1):
     additional_args = sys.argv[2:]
     # command option will always be the first additional argument
     command_option = additional_args[0]
+    grouping_column = additional_args[1] if len(additional_args) > 1 else None
+    grouping_index = 0
     # array of csv objects, each represent a row in the CSV file
     csv_objects_array = []
     # get current directory path
@@ -66,6 +68,11 @@ if (len(sys.argv) > 1):
         reader = csv.reader(f)
         # Get CSV file header row, remove from reader array
         headers = next(reader, None)
+        if grouping_column:
+            grouping_index = headers.index(grouping_column)
+        else:
+            grouping_column = 'NAME'
+            grouping_index = headers.index(grouping_column)
 
         for row in reader:
             # Command logic, 'read' stage.
@@ -75,7 +82,9 @@ if (len(sys.argv) > 1):
                 'read',
                 {
                     "headers": headers,
-                    "row": row
+                    "row": row,
+                    "grouping_column": grouping_column,
+                    "grouping_index": grouping_index
                 }
             ):
                 continue
